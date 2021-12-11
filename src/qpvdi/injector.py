@@ -139,7 +139,7 @@ def auto_factory(alias_type: Generic[T], implement_type: Generic[T]):
     di_context.put_component(alias_type, implement_type, __create_component_bean__(implement_type, False))
 
 
-def get(gen_type):
+def get(gen_type: T) -> T:
     return di_context.require(gen_type).get_instance()
 
 

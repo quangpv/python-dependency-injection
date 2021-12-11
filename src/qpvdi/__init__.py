@@ -6,4 +6,4 @@ from .injector import factory as factory
 from .injector import auto_single as auto_single
 from .injector import auto_factory as auto_factory
 
-__version__ = "0.0.4"
+__version__ = "0.0.5"
