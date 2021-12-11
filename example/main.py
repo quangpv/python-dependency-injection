@@ -1,4 +1,4 @@
-from src.injector import get, component, single, factory
+from src.qpvdi.injector import component, get
 from typeb import TypeB
 from typec import TypeC
 

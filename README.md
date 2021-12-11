@@ -2,9 +2,9 @@
 
 ### Step to publish open source
 
-1. Install sdist
+1. Install and run build
 
-```python setup.py sdist```
+`python -m build`
 
 2. Install Twine
 

@@ -1,4 +1,4 @@
-from src.injector import component, inject
+from src.qpvdi.injector import component, inject
 from typeb import TypeB
 
 
