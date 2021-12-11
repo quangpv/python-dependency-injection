@@ -1,4 +1,4 @@
-from src.qpvdi.injector import component, get
+from src.qpvdi.injector import get, auto_single
 from typeb import TypeB
 from typec import TypeC
 
@@ -12,7 +12,7 @@ class TypeA:
         return f'{self.type_b.__str__()} - {self.type_c.__str__()}'
 
 
-@component(alias_for=TypeA)
+# @component(alias_for=TypeA)
 class TypeA1(TypeA):
     def __str__(self):
         return f'Custom {self.type_b.__str__()} - {self.type_c.__str__()}'
@@ -20,6 +20,8 @@ class TypeA1(TypeA):
 
 # single(TypeA, lambda f: TypeA1(f(TypeB), f(TypeC)))
 # factory(TypeA, lambda f: TypeA1(f(TypeB), f(TypeC)))
+
+auto_single(TypeA, TypeA1)
 
 if __name__ == '__main__':
     type_a = get(TypeA)

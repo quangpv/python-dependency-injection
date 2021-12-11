@@ -86,6 +86,21 @@ class DIContext(Injector):
 di_context = DIContext()
 
 
+def __create_component_bean__(di_type: Generic[T], singleton: bool) -> ComponentBean:
+    constructor = di_type.__init__
+    annotations = getattr(constructor, "__annotations__", None)
+    code = getattr(constructor, "__code__", None)
+
+    if code is not None and annotations is not None:
+        if code.co_argcount - 1 != len(annotations):
+            raise RuntimeError(f"You're missing hint type in class {di_type.__name__}")
+
+    if annotations is None or len(annotations) == 0:
+        return ComponentBean(di_type, [], singleton)
+    param_types = [annotations[param_name] for param_name in annotations]
+    return ComponentBean(di_type, param_types, singleton)
+
+
 def component(f=None, alias_for: Generic[T] = None, singleton: bool = False):
     type_alias = alias_for
     if not f:
@@ -98,26 +113,12 @@ def component(f=None, alias_for: Generic[T] = None, singleton: bool = False):
     def wrapper(*args, **kwargs):
         return f(*args, **kwargs)
 
-    def create_component_bean(di_type: Generic[T]) -> ComponentBean:
-        constructor = di_type.__init__
-        annotations = getattr(constructor, "__annotations__", None)
-        code = getattr(constructor, "__code__", None)
-
-        if code is not None and annotations is not None:
-            if code.co_argcount - 1 != len(annotations):
-                raise RuntimeError(f"You're missing hint type in class {di_type.__name__}")
-
-        if annotations is None or len(annotations) == 0:
-            return ComponentBean(di_type, [], singleton)
-        param_types = [annotations[param_name] for param_name in annotations]
-        return ComponentBean(di_type, param_types, singleton)
-
     alias = type_alias
 
     if type_alias is None:
         alias = f
 
-    di_context.put_component(alias, f, create_component_bean(f))
+    di_context.put_component(alias, f, __create_component_bean__(f, singleton))
 
     return wrapper
 
@@ -126,8 +127,16 @@ def single(alias_type: Generic[T], creator: InstanceFactory):
     di_context.put(alias_type, DefinitionBean(creator, True))
 
 
+def auto_single(alias_type: Generic[T], implement_type: Generic[T]):
+    di_context.put_component(alias_type, implement_type, __create_component_bean__(implement_type, True))
+
+
 def factory(alias_type: Generic[T], creator: InstanceFactory):
     di_context.put(alias_type, DefinitionBean(creator, False))
+
+
+def auto_factory(alias_type: Generic[T], implement_type: Generic[T]):
+    di_context.put_component(alias_type, implement_type, __create_component_bean__(implement_type, False))
 
 
 def get(gen_type):
