@@ -1,4 +1,4 @@
-from di.injector import component, inject
+from src.injector import component, inject
 from typeb import TypeB
 
 

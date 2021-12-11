@@ -1,4 +1,4 @@
-from di.injector import component
+from src.injector import component
 
 
 class TypeB:

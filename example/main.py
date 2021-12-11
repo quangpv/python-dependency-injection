@@ -1,4 +1,4 @@
-from di.injector import get, component, single, factory
+from src.injector import get, component, single, factory
 from typeb import TypeB
 from typec import TypeC
 
