@@ -1,9 +1,9 @@
-from .injector import component
-from .injector import inject
-from .injector import get
-from .injector import single
-from .injector import factory
-from .injector import auto_single
-from .injector import auto_factory
+from .injector import component as component
+from .injector import inject as inject
+from .injector import get as get
+from .injector import single as single
+from .injector import factory as factory
+from .injector import auto_single as auto_single
+from .injector import auto_factory as auto_factory
 
-__version__ = "0.0.3"
+__version__ = "0.0.4"
